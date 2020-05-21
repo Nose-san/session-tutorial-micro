@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sessiontutorial.domain.repository.order.OrderRepository">
+
+    <insert id="createOrder" parameterType="com.example.sessiontutorial.domain.model.Order">
+        INSERT INTO
+            orders
+        (
+        	order_id,
+            email,
+            order_date
+        )
+        VALUES
+        (
+            #{id}
+            ,#{email}
+            ,#{orderDate}
+        )
+	</insert>
+
+    <insert id="createOrderLines" parameterType="list">
+        INSERT INTO
+        order_line
+        (
+        order_id,
+        goods_id,
+        quantity
+        )
+        VALUES
+        <foreach collection="list" item="orderLine" separator=",">
+            (
+            #{orderLine.orderId}
+            ,#{orderLine.goods.id}
+            ,#{orderLine.quantity}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteOrder" parameterType="string">
+        DELETE FROM orders
+        WHERE
+            order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteOrderLines" parameterType="string">
+        DELETE FROM order_line
+        WHERE
+            order_id = #{orderId}
+    </delete>
+</mapper>
